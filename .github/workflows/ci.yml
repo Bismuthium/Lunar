@@ -21,18 +21,19 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: npm i --force
+        run: yarn install --frozen-lockfile
+
       - name: Build
-        run: npm run build
+        run: yarn build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build # directory to deploy
+          publish_dir: ./build 
