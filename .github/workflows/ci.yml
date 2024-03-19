@@ -15,4 +15,4 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Build and Deploy React app to GitHub Pages
-      uses: thepython555/react-deployment-gh-pages@v1.0.0
+      uses: thepython555/react-deployment-gh-pages@1.0.0
