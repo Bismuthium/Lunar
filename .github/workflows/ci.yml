@@ -1,8 +1,10 @@
-name: Node.js CI with Yarn
+name: CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
@@ -11,15 +13,37 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [12.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }} with Yarn
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        registry-url: https://registry.yarnpkg.com/
-    - run: yarn install --frozen-lockfile
-    - run: yarn build --if-present
-    - run: yarn test
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Run the tests and generate coverage report
+      run: yarn test --coverage
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+
+    - name: Build
+      run: yarn build
+
+    - name: Deploy
+      run: |
+        git config --global user.name $user_name
+        git config --global user.email $user_email
+        git remote set-url origin https://${github_token}@github.com/${repository}
+        yarn deploy
+      env:
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+        github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+        repository: ${{ github.repository }}
