@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lunar - Execute Lua Code Online</title>
+</head>
+<body>
+  <h1>Execute Lua Code</h1>
+  <p>Type your Lua code below and click 'Run' to execute:</p>
+  <textarea id="luaCode" rows="10" cols="50">print("Hello, world!")</textarea>
+  <button onclick="runLua()">Run</button>
+  
+  <div id="output"></div>
+
+  <script src="https://github.com/fengari-lua/fengari-web/releases/download/v0.1.4/fengari-web.js"></script>
+  <script>
+    function runLua() {
+      var luaCode = document.getElementById('luaCode').value;
+      var outputDiv = document.getElementById('output');
+
+      outputDiv.innerHTML = '';
+
+      var L = fengari.lauxlib.luaL_newstate();
+
+      var status = fengari.lauxlib.luaL_loadstring(L, luaCode);
+
+      if (status === fengari.LUA_OK) {
+        status = fengari.lua.lua_pcall(L, 0, fengari.LUA_MULTRET, 0);
+
+        if (status === fengari.LUA_OK) {
+          var output = '';
+
+          while (!fengari.lua.lua_isnone(L, -1)) {
+            output += String(fengari.tojs(L, -1)) + '<br>';
+            fengari.lua.lua_pop(L, 1);
+          }
+
+          outputDiv.innerHTML = output;
+        } else {
+          outputDiv.innerHTML = 'Error executing Lua code: ' + fengari.tojs(L, -1);
+        }
+      } else {
+        outputDiv.innerHTML = 'Error loading Lua code: ' + fengari.tojs(L, -1);
+      }
+
+      fengari.lua.lua_close(L);
+    }
+  </script>
+  <p>Press F12</p>
+</body>
+</html>
