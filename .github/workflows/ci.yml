@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Node.js CI with Yarn
 
 on:
   push:
@@ -15,10 +15,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js ${{ matrix.node-version }} with Yarn
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+        registry-url: https://registry.yarnpkg.com/
+    - run: yarn install --frozen-lockfile
+    - run: yarn build --if-present
+    - run: yarn test
