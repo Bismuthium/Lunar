@@ -4,14 +4,66 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lunar - Execute Lua Code Online</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 0;
+    }
+    main {
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #output {
+      margin-top: 10px;
+    }
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-  <h1>Execute Lua Code</h1>
-  <p>Type your Lua code below and click 'Run' to execute:</p>
-  <textarea id="luaCode" rows="10" cols="50">print("Hello, world!")</textarea>
-  <button onclick="runLua()">Run</button>
-  
-  <div id="output"></div>
+  <header>
+    <h1>Lunar - Execute Lua Code Online</h1>
+  </header>
+  <main>
+    <p>Type your Lua code below and click 'Run' to execute:</p>
+    <textarea id="luaCode" rows="10" placeholder="Enter Lua code here...">print("Hello, world!")</textarea>
+    <button onclick="runLua()">Run</button>
+    <div id="output"></div>
+    <p>Press F12 to see what you made!</p>
+  </main>
+  <footer>
+    <p>&copy; 2024 Bismuthium. All rights reserved.</p>
+  </footer>
 
   <script src="https://github.com/fengari-lua/fengari-web/releases/download/v0.1.4/fengari-web.js"></script>
   <script>
@@ -47,6 +99,5 @@
       fengari.lua.lua_close(L);
     }
   </script>
-  <p>Press F12</p>
 </body>
 </html>
