@@ -1,7 +1,6 @@
 import MenuBar from "./components/menu-bar";
 import Editor from "./components/editor";
 import { saveAs } from "file-saver";
-import { LuaJS } from "@doridian/luajs";
 
 const handleSave = () => {
   let blob = new Blob([window.state.code], { type: "text/lua" });
@@ -36,14 +35,7 @@ const handleLoad = () => {
 };
 
 const handleRun = async () => {
-  try {
-    let value;
-    LuaJS.newState().then(async (L) => {
-      value = await L.run(window.state.code);
-    });
-  } catch (error) {
-    alert(error);
-  }
+  alert("Sorry! this feature is unavailable due to it crashing the sevrers.")
 }
 
 function App() {
